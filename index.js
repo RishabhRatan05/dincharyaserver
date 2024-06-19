@@ -14,9 +14,10 @@ const connectDB = require('./utils/conn.js')
 connectDB()
 
 const corsOption={
-    origin:url
+    origin:url,
+    method:"GET PUT POST DELETE"
 }
-app.use(cors(corsOption))
+app.use(cors())
 app.use(express.json())
 
 app.use('/',authRoute)
