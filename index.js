@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 dotenv.config()
 const app = express()
 
@@ -19,6 +20,7 @@ const corsOption={
 }
 app.use(cors())
 app.use(express.json())
+app.use(bodyParser.json())
 
 app.use('/',authRoute)
 app.use("/api/progress", progressRoute)
