@@ -5,10 +5,10 @@ const User = require("../models/profile")
 const loginUser =async (req,res)=>{
     try {
         const { email, password } = req.body
-        if (!email || !password) res.json({ message: "Enter all fields" })
+        if (!email || !password) res.status(401).json({ message: "Enter all fields" })
 
         const user = await User.find({ email: email })
-        if (!user) res.json({ message: "Incorrect Credentials" })
+        if (!user) res.status(401).json({ message: "Incorrect Credentials" })
         const userPassword = user[0].password
 
         const isVerified = await bcrypt.compare(
@@ -17,7 +17,7 @@ const loginUser =async (req,res)=>{
         )
         if (!isVerified) res.json({ message: "Incorrect Credentials" })
 
-        res.json({
+        res.status(200).json({
           message: "Login Successful",
           user,
         })
@@ -27,7 +27,7 @@ const loginUser =async (req,res)=>{
 
 }
 
-const signInUser =async (req, res)=>{
+const signUpUser =async (req, res)=>{
     const { name, email, password } = req.body
     if(!name || !email || !password) throw new Error({"message":"Enter all fields"})
 
@@ -42,6 +42,6 @@ const signInUser =async (req, res)=>{
 }
 
 module.exports ={
-    signInUser,
+    signUpUser,
     loginUser
 }

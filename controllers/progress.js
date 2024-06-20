@@ -56,6 +56,9 @@ const updateProgress  = async(req,res)=>{
 
 const deleteProgress = async(req,res)=>{
   const id = req.params.id
+
+  // need to delete task from the profile of the task user
+  
   const todo =await Todo.deleteOne({_id:id})
 
   res.json({
