@@ -41,8 +41,7 @@ const createProgress =async (req,res)=>{
 
 
 const updateProgress  = async(req,res)=>{
-  const id = req.params.id
-  const {title,description,isCompleted} = req.body
+  const {title,description,isCompleted,id} = req.body
   const todo = await Todo.findByIdAndUpdate(id, {
     title,
     description,
