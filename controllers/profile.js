@@ -1,7 +1,12 @@
+const { getId } = require("../middlewares/auth")
 const User = require("../models/profile")
 
 const getProfile = async (req, res) => {
-  const id = req.params.id
+  const token = req.headers['authorization']
+
+  const id = await getId(token)
+
+
   const user = await User.findById(id)
 
   res.json({
@@ -10,7 +15,8 @@ const getProfile = async (req, res) => {
 }
 
 const updateProfile =async (req,res)=>{
-    const id = req.params.id
+  const token = req.headers["authorization"]
+  const id =  await getId(token)
     const {name, email, password} = req.body
 
     const user =await User.findByIdAndUpdate(id, { name, email, password })
@@ -22,7 +28,8 @@ const updateProfile =async (req,res)=>{
 }
 
 const deleteProfile = async (req,res)=>{
-  const id = req.params.id
+  const token = req.headers["authorization"]
+  const id =await getId(token)
   const user =await User.findByIdAndDelete(id)
 
   res.json({

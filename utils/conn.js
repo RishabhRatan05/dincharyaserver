@@ -8,7 +8,6 @@ const connectDB = async()=>{
         const connection = await mongoose.connect(process.env.MONGO_URI,{
             dbName: 'dincharya'
         })
-        console.log(`server connected at`)
     } catch (error) {
         console.error(error)
     }

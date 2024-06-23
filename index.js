@@ -12,6 +12,7 @@ const progressRoute = require("./routes/progress.js")
 const authRoute = require('./routes/auth.js')
 
 const connectDB = require('./utils/conn.js')
+const {checkLoggedInUser} = require('./middlewares/auth.js')
 connectDB()
 
 const corsOption={
@@ -23,8 +24,8 @@ app.use(express.json())
 app.use(bodyParser.json())
 
 app.use('/',authRoute)
-app.use("/api/progress", progressRoute)
-app.use("/api/profile", profileRoute)
+app.use("/api/progress", checkLoggedInUser, progressRoute)
+app.use("/api/profile",checkLoggedInUser,profileRoute)
 
 app.listen(PORT,()=>{
     console.log( `server started at port : ${PORT}`   )

@@ -1,33 +1,28 @@
+const { default: mongoose } = require("mongoose")
 const User = require("../models/profile")
 const Todo = require("../models/progress")
+const { getId } = require("../middlewares/auth")
 
 const getAllProgress = async(req,res)=>{
-  const id = req.params.id
+
+  const token = req.headers['authorization']
+  if (typeof token == "undefined") res.json({message:"Please Login first"})
+
+  const id = await getId(token)
 
     const progress = await Todo.find({profile:id})
-    // const user = await User.findById(id)
-
-    // const progress =[]
-    // user.todos.forEach(async(id)=>{
-    //   const todo = await Todo.findById(id)
-    //   const {title,description,isCompleted} = todo
-    //   progress.push({ title, description, isCompleted })
-    //   console.log('inside',progress)
-    // })
 
     const daa = JSON.stringify(progress)
-    // console.log('daa',daa)
 
     res.json({
-      // daa,
       daa
     })
 }
 
 const createProgress =async (req,res)=>{
-  const id = req.params.id
+  const token = req.headers["authorization"]
+  const id = await getId(token)
   const data = (req.body)
-  console.log('Something Wrong',data)
     const { title, description, isCompleted} = (data)
     const todo = await Todo.create({ title, description, isCompleted,profile:id})
     const user = await User.findByIdAndUpdate(id,{$push:{todos:todo._id}})
@@ -56,9 +51,6 @@ const updateProgress  = async(req,res)=>{
 
 const deleteProgress = async(req,res)=>{
   const id = req.params.id
-
-  // need to delete task from the profile of the task user
-  
   const todo =await Todo.deleteOne({_id:id})
 
   res.json({

@@ -4,11 +4,11 @@ const { getAllProgress, createProgress, deleteProgress, updateProgress } = requi
 
 const router = express.Router()
 
-router.put('/',updateProgress)
-router.route('/:id')
+router.route('/')
+        .put(updateProgress)
         .get(getAllProgress)
         .post(createProgress)
-        .delete(deleteProgress)
+router.delete('/:id',deleteProgress)
 
 
 

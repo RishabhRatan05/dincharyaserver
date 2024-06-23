@@ -4,7 +4,7 @@ const {getProfile, updateProfile, deleteProfile} = require('../controllers/profi
 const router = express.Router()
 
 
-router.route("/:id")
+router.route("/")
     .get(getProfile)
     .put(updateProfile)
     .delete(deleteProfile)
