@@ -54,7 +54,7 @@ const signUpUser =async (req, res)=>{
     const user =await  User.create({ name, email, password:hashedPassword })
 
     const token = setToken(email)
-
+    res.setHeader("token", token)
     
     res.status(202).json({
         success:true,
