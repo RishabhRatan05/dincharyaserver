@@ -4,17 +4,18 @@ const User = require("../models/profile")
 const checkLoggedInUser = async (req, res, next) => {
   const token = req.headers["authorization"]
 
-  if (typeof token == "undefined") return
+  if (typeof token == "undefined" || typeof token == null) return
+  else {
+    const email = jwt.verify(token, process.env.SECRET)
 
-  const email = jwt.verify(token, process.env.SECRET)
+    const isUser = await User.find({ email })
 
-  const isUser = await User.find({ email })
+    if (isUser) {
+      next()
+    }
 
-  if (isUser) {
-    next()
+    return
   }
-
-  return
 }
 
 const getId = async (token) => {

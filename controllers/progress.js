@@ -5,7 +5,7 @@ const { getId } = require("../middlewares/auth")
 
 const getAllProgress = async (req, res) => {
   const token = req.headers["authorization"]
-  if (typeof token == "undefined")
+  if (typeof token == "undefined" || typeof token == null)
     return res.json({ message: "Please Login first" })
 
   const id = await getId(token)
