@@ -1,36 +1,33 @@
-const  jwt = require('jsonwebtoken')
-const User = require('../models/profile')
+const jwt = require("jsonwebtoken")
+const User = require("../models/profile")
 
+const checkLoggedInUser = async (req, res, next) => {
+  const token = req.headers["authorization"]
 
-const checkLoggedInUser =async (req,res,next)=>{
+  if (typeof token == "undefined") return
 
-    const token = req.headers['authorization']
+  const email = jwt.verify(token, process.env.SECRET)
 
-    if(typeof(token)=='undefined') return
+  const isUser = await User.find({ email })
 
-    const email = jwt.verify(token, process.env.SECRET)
+  if (isUser) {
+    next()
+  }
 
-    const isUser = await User.find({email})
-
-    if(isUser){
-        next()
-    }
-
-    return
+  return
 }
 
-const getId =async (token)=>{
-    
-    const email = jwt.verify(token,process.env.SECRET)
+const getId = async (token) => {
+  if (typeof token == "undefined") return null
 
-    const isUser = await User.find({ email:email })
+  const email = jwt.verify(token, process.env.SECRET)
 
-    const {_id} = isUser[0]
+  const isUser = await User.find({ email: email })
 
-    
+  if (!isUser) return null
 
-    return (_id)
-
+  const { _id } = isUser[0]
+  return _id
 }
 
-module.exports = {checkLoggedInUser,getId}
+module.exports = { checkLoggedInUser, getId }
