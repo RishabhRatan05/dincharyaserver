@@ -25,7 +25,7 @@ app.use(bodyParser.json())
 
 app.use("/", authRoute)
 app.use("/api/progress", checkLoggedInUser, progressRoute)
-app.use("/api/profile", profileRoute)
+app.use("/api/profile", checkLoggedInUser, profileRoute)
 
 app.listen(PORT, () => {
   console.log(`server started at port : ${PORT}`)

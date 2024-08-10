@@ -4,7 +4,6 @@ const User = require("../models/profile")
 const checkLoggedInUser = async (req, res, next) => {
   const token = req.headers["authorization"]
   if (token == "null") {
-    next()
     return
   } else {
     const email = jwt.verify(token, process.env.SECRET)
