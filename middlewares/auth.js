@@ -3,8 +3,7 @@ const User = require("../models/profile")
 
 const checkLoggedInUser = async (req, res, next) => {
   const token = req.headers["authorization"]
-
-  if (typeof token == "undefined" || typeof token == null || !token) {
+  if (token == "null") {
     next()
     return
   } else {
@@ -21,19 +20,18 @@ const checkLoggedInUser = async (req, res, next) => {
 }
 
 const getId = async (token) => {
-  if (typeof token == "undefined" || typeof token == null || !token) {
-    next()
+  if (token == "null") {
     return null
+  } else {
+    const email = jwt.verify(token, process.env.SECRET)
+
+    const isUser = await User.find({ email: email })
+
+    if (!isUser) return null
+
+    const { _id } = isUser[0]
+    return _id
   }
-
-  const email = jwt.verify(token, process.env.SECRET)
-
-  const isUser = await User.find({ email: email })
-
-  if (!isUser) return null
-
-  const { _id } = isUser[0]
-  return _id
 }
 
 module.exports = { checkLoggedInUser, getId }
